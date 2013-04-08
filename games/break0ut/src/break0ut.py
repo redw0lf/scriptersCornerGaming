@@ -53,7 +53,7 @@ def main():
     blockAreaWidth = int(width * 0.8)
     blockAreaHeight = int(height * 0.5)
     
-    maxBlockInX = (blockAreaWidth/aBlock.rect.width)
+    maxBlockInX = int(blockAreaWidth/aBlock.rect.width)
     
     #update the block area width to the correct size
     blockAreaWidth = (maxBlockInX*aBlock.rect.width)
