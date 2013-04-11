@@ -10,15 +10,15 @@ class MenuItem (pygame.font.Font):
     '''
     The Menu Item should be derived from the pygame Font class
     '''
-    def __init__(self,text, position,fontSize=36, antialias = 1, color = (255, 255, 255), background=None):
-        pygame.font.Font.__init__(self,None, fontSize)
+    def __init__(self, text, position, fontSize=36, antialias=1, color=(255, 255, 255), background=None):
+        pygame.font.Font.__init__(self, None, fontSize)
         self.text = text
         if background == None:
-            self.textSurface = self.render(self.text,antialias,(255,255,255))
+            self.textSurface = self.render(self.text, antialias, (255, 255, 255))
         else:
-            self.textSurface = self.render(self.text,antialias,(255,255,255),background)
+            self.textSurface = self.render(self.text, antialias, (255, 255, 255), background)
 
-        self.position=self.textSurface.get_rect(centerx=position[0],centery=position[1])
+        self.position = self.textSurface.get_rect(centerx=position[0], centery=position[1])
     def get_pos(self):
         return self.position
     def get_text(self):
@@ -34,9 +34,9 @@ class Menu:
     print Settings needed
     '''
     
-    MENUCLICKEDEVENT = USEREVENT +1
+    MENUCLICKEDEVENT = USEREVENT + 1
     
-    def __init__(self,menuEntries, menuCenter = None):
+    def __init__(self, menuEntries, menuCenter=None):
         '''
         The constructer uses a list of string for the menu entries,
         which need  to be created
@@ -47,33 +47,33 @@ class Menu:
         self.background = pygame.Surface(screen.get_size())
         self.background = self.background.convert()
         self.background.fill((0, 0, 0))
-        self.active=False
+        self.active = False
         
         if pygame.font:
             fontSize = 36
-            fontSpace= 4
+            fontSpace = 4
             # loads the standard font with a size of 36 pixels
             # font = pygame.font.Font(None, fontSize)
             
             # calculate the height and startpoint of the menu
             # leave a space between each menu entry
-            menuHeight = (fontSize+fontSpace)*len(menuEntries)
-            startY = self.background.get_height()/2 - menuHeight/2  
+            menuHeight = (fontSize + fontSpace) * len(menuEntries)
+            startY = self.background.get_height() / 2 - menuHeight / 2  
             
-            #listOfTextPositions=list()
+            # listOfTextPositions=list()
             self.menuEntries = list()
             for menuEntry in menuEntries:
-                centerX=self.background.get_width()/2
-                centerY = startY+fontSize+fontSpace
-                newEnty = MenuItem(menuEntry,(centerX,centerY))
+                centerX = self.background.get_width() / 2
+                centerY = startY + fontSize + fontSpace
+                newEnty = MenuItem(menuEntry, (centerX, centerY))
                 self.menuEntries.append(newEnty)
                 self.background.blit(newEnty.get_surface(), newEnty.get_pos())
-                startY=startY+fontSize+fontSpace
+                startY = startY + fontSize + fontSpace
                 
         
             
     def drawMenu(self):
-        self.active=True            
+        self.active = True            
         screen = pygame.display.get_surface()
         screen.blit(self.background, (0, 0))
         
@@ -83,8 +83,9 @@ class Menu:
         self.active = True
     def deactivate(self):
         self.active = False
-    def handleEvent(self,event):
-        if event.type == MOUSEBUTTONDOWN:
+    def handleEvent(self, event):
+        # only send the event if menu is active
+        if event.type == MOUSEBUTTONDOWN and self.isActive():
             # initiate with menu Item 0
             curItem = 0
             # get x and y of the current event 
@@ -93,16 +94,16 @@ class Menu:
             # for each text position 
             for menuItem in self.menuEntries:
                 textPos = menuItem.get_pos()
-                #check if current event is in the text area 
+                # check if current event is in the text area 
                 if eventX > textPos.left and eventX < textPos.right \
-                and eventY > textPos.top and eventY<textPos.bottom:
+                and eventY > textPos.top and eventY < textPos.bottom:
                     # if so fire new event, which states which menu item was clicked                        
-                    menuEvent=pygame.event.Event(self.MENUCLICKEDEVENT, item=curItem, text = menuItem.get_text())
+                    menuEvent = pygame.event.Event(self.MENUCLICKEDEVENT, item=curItem, text=menuItem.get_text())
                     pygame.event.post(menuEvent)
-                curItem = curItem+1
+                curItem = curItem + 1
             
 def main():
-    #pygame initialization
+    # pygame initialization
     width = 800
     height = 600
 
@@ -141,7 +142,7 @@ def main():
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 myMenu.activate()
             elif event.type == Menu.MENUCLICKEDEVENT:
-                if event.text=="Quit":
+                if event.text == "Quit":
                     return
                 elif event.item == 0:
                     isGameActive = True
