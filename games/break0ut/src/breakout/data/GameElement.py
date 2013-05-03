@@ -22,7 +22,7 @@ class GameElement(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)  # call Sprite initializer
         
     def load_image(self, name, colorkey=None):
-        fullname = os.path.join('../data', name)
+        fullname = os.path.join('./data', name)
         try:
             image = pygame.image.load(fullname)
         except pygame.error, message:
