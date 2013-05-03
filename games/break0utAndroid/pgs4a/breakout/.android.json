@@ -1,0 +1,1 @@
+{"layout": "internal", "orientation": "landscape", "package": "net.sc.breakout", "include_pil": false, "name": "breakout", "icon_name": "breakout", "version": "0.1", "permissions": ["INTERNET", "VIBRATE"], "include_sqlite": false, "numeric_version": "1"}
